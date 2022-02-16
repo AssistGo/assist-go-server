@@ -9,6 +9,10 @@ This is the server backend for the AssistGo! app!
 - JavaScript
 - MongoDB
 
+## To install Dependencies
+
+`npm install`
+
 ## To run in Development
 
 `npm run dev`
