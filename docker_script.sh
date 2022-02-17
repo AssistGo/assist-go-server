@@ -6,4 +6,5 @@ read Username
 echo "What is your MongoDB Password? (Case-sensitive) "
 read Password
 
-echo "MONGO_USERNAME=${Username}\nMONGO_PASSWORD=${Password}" >> .env
+sudo docker run -p 8080:8080 -d l9caps/assist-go-server -t -i -e MONGO_USERNAME="${Username}" \
+-e MONGO_PASSWORD="${Password}"

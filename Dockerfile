@@ -8,11 +8,8 @@ COPY package*.json ./
 
 RUN npm install
 
-RUN chmod +x docker_script.sh
-
-RUN ./docker_script.sh
-
 COPY . .
 
 EXPOSE 8080
+
 CMD [ "npm", "run", "start" ]
