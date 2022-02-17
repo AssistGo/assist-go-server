@@ -9,4 +9,6 @@ read Password
 echo "MONGO_USERNAME=${Username}" >> .env
 echo "MONGO_USERNAME=${Password}" >> .env
 
+npm install
+
 nohup node server.js &
