@@ -7,7 +7,7 @@ echo "What is your MongoDB Password? (Case-sensitive) "
 read Password
 
 echo "MONGO_USERNAME=${Username}" >> .env
-echo "MONGO_USERNAME=${Password}" >> .env
+echo "MONGO_PASSWORD=${Password}" >> .env
 
 npm install
 
