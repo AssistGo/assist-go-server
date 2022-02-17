@@ -2,12 +2,12 @@ const express = require("express");
 const app = express();
 require("dotenv").config();
 const cors = require("cors");
-const PORT = process.env.PORT | 8080;
+const PORT = 8080;
 const mongoose = require("mongoose");
 
 const connectMongo = async () => {
   return await mongoose.connect(
-    process.env.MONGO_CONNECTION_STRING,
+    `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@assistgo.iups8.mongodb.net/AssistGo?retryWrites=true&w=majority`,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
