@@ -11,4 +11,4 @@ echo "MONGO_PASSWORD=${Password}" >> .env
 
 npm install
 
-nohup node server.js &
+sudo nohup npm run start &
