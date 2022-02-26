@@ -10,5 +10,6 @@ echo "MONGO_USERNAME=${Username}" >> .env
 echo "MONGO_PASSWORD=${Password}" >> .env
 
 npm install
+npm run build
 
 sudo nohup npm run start &

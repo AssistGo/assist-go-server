@@ -1,18 +1,14 @@
-const express = require("express");
-const app = express();
-require("dotenv").config();
-const cors = require("cors");
+import express, { Application, NextFunction, Request, Response } from "express";
+const app: Application = express();
+import "dotenv/config";
+import cors from "cors";
 const PORT = 8080;
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const connectMongo = async () => {
   return await mongoose.connect(
     `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@assistgo.iups8.mongodb.net/AssistGo?retryWrites=true&w=majority`,
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    },
-    (error) => {
+    (error: any) => {
       if (error) throw error;
       console.log(`Connected to MongoDB Database!`);
     },
@@ -31,18 +27,18 @@ app.use(
   }),
 );
 
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   console.log(`${req.method} - ${req.url}`);
   next();
 });
 
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   return res
     .status(200)
     .json({ message: "Welcome to AssistGo's Back End API!" });
 });
 
-app.get("/example", (req, res) => {
+app.get("/example", (req: Request, res: Response) => {
   return res.status(200).json({
     contacts: [
       {
