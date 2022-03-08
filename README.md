@@ -6,7 +6,7 @@ This is the server backend for the AssistGo! app!
 
 - Node.js
 - Express.js
-- JavaScript
+- TypeScript
 - MongoDB
 
 ## To install Dependencies

@@ -38,7 +38,7 @@ app.use(MessageController.router);
 app.get("/", (req: Request, res: Response) => {
   return res
     .status(200)
-    .json({ message: "Welcome to AssistGo's Back End API!" });
+    .json({ message: "Hello World! Welcome to AssistGo's Back End API!" });
 });
 
 // Opening server at the given port
