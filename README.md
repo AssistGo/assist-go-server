@@ -1,6 +1,6 @@
 # AssistGo! App
 
-This is the server backend for the AssistGo! app!
+This is the back end server for the AssistGo! app!
 
 ## Technologies
 
