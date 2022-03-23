@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
 import { v4 } from "uuid";
+import codes, { by639_1, by639_2T, by639_2B } from "iso-language-codes";
+import CreateNewUserDto from "../dto/CreateNewUser.dto";
+import UserModel from "../models/User.model";
+import { ChangeLanguageDto } from "../dto/ChangeCountryLanguage.dto";
 
 class UserService {
   public actions;
@@ -26,14 +30,58 @@ class UserService {
   }
 
   // Sync OR Create User
-  private syncUserData(req: Request, res: Response) {}
+  private async syncUserData(req: Request, res: Response) {
+    const userDto: CreateNewUserDto = req.body.user;
+    const createOrSync: String = req.body.createOrSync;
+
+    if (!userDto) {
+      return res
+        .status(400)
+        .json({ resStatus: "FAIL", message: "Inaccurate Object Schema" });
+    }
+
+    createOrSync === "CREATE"
+      ? await UserModel.create(userDto)
+      : await UserModel.updateOne({ id: userDto.id }, userDto);
+
+    return res.json({
+      resStatus: "SUCCESS",
+      user: userDto,
+      message:
+        "Successfully " +
+        (createOrSync === "CREATE" ? "created" : "synced") +
+        " user!",
+    });
+  }
 
   // User info
   private getUserInfo(req: Request, res: Response) {}
   private changePhoneNumber(req: Request, res: Response) {}
   private changeUserInfo(req: Request, res: Response) {}
   private deleteAccount(req: Request, res: Response) {}
-  private changeLanguage(req: Request, res: Response) {}
+
+  private async changeLanguage(req: Request, res: Response) {
+    const languageDto: ChangeLanguageDto = req.body.language;
+
+    const user = await UserModel.findOneAndUpdate(
+      { id: languageDto.id },
+      { language: languageDto.language },
+    );
+
+    if (!user) {
+      return res.json({
+        resStatus: "FAIL",
+        message:
+          "User does not exist in the database. Please sync the user data first!",
+      });
+    }
+
+    return res.json({
+      resStatus: "SUCCESS",
+      user: user,
+      message: "Successfully changed the user's language preference!",
+    });
+  }
 
   // Contacts
   private removeContact(req: Request, res: Response) {}
