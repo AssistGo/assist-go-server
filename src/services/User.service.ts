@@ -4,6 +4,8 @@ import codes, { by639_1, by639_2T, by639_2B } from "iso-language-codes";
 import CreateNewUserDto from "../dto/CreateNewUser.dto";
 import UserModel from "../models/User.model";
 import { ChangeLanguageDto } from "../dto/ChangeCountryLanguage.dto";
+import GetUserInfoDto from "../dto/GetUserInfo.dto";
+import ChangeNumberDto from "../dto/ChangeNumber.dto";
 
 class UserService {
   public actions;
@@ -55,10 +57,84 @@ class UserService {
   }
 
   // User info
-  private getUserInfo(req: Request, res: Response) {}
-  private changePhoneNumber(req: Request, res: Response) {}
-  private changeUserInfo(req: Request, res: Response) {}
-  private deleteAccount(req: Request, res: Response) {}
+  private async getUserInfo(req: Request, res: Response) {
+    const id: GetUserInfoDto = req.body;
+
+    const user = await UserModel.findOne({ id: id });
+
+    if (!user) {
+      res.status(400).json({
+        resStatus: "FAIL",
+        message:
+          "User does not exist inthe database. Please sync or create the user in the database first.",
+      });
+    }
+
+    res.json({
+      resStatus: "SUCCESS",
+      user: user,
+      message: "Successfully returned user object!",
+    });
+  }
+
+  private async changePhoneNumber(req: Request, res: Response) {
+    const changePhoneNumber: ChangeNumberDto = req.body;
+
+    const user = await UserModel.findOneAndUpdate(
+      { id: changePhoneNumber.id },
+      { ...changePhoneNumber },
+    );
+
+    if (!user) {
+      res.status(400).json({
+        resStatus: "FAIL",
+        message:
+          "User does not exist inthe database. Please sync or create the user in the database first.",
+      });
+    }
+
+    return res.json({
+      resStatus: "SUCCESS",
+      user: user,
+      message: "Successfully returned user object!",
+    });
+  }
+
+  private async changeUserInfo(req: Request, res: Response) {
+    const userDto: CreateNewUserDto = req.body.user;
+
+    if (!userDto) {
+      return res
+        .status(400)
+        .json({ resStatus: "FAIL", message: "Inaccurate Object Schema" });
+    }
+
+    await UserModel.findOneAndUpdate({ id: userDto.id }, { ...userDto });
+
+    return res.json({
+      resStatus: "SUCCESS",
+      user: userDto,
+      message: "Successfully updated user!",
+    });
+  }
+
+  private async deleteAccount(req: Request, res: Response) {
+    const id: String = req.body.id;
+
+    const user = await UserModel.findOneAndDelete({ id });
+
+    if (!user) {
+      return res.status(400).json({
+        resStatus: "FAIL",
+        message: "Cannot delete user that does not exist!",
+      });
+    }
+
+    return res.json({
+      resStatus: "SUCCESS",
+      message: "Successfully deleted the user!",
+    });
+  }
 
   private async changeLanguage(req: Request, res: Response) {
     const languageDto: ChangeLanguageDto = req.body.language;
@@ -69,10 +145,10 @@ class UserService {
     );
 
     if (!user) {
-      return res.json({
+      return res.status(400).json({
         resStatus: "FAIL",
         message:
-          "User does not exist in the database. Please sync the user data first!",
+          "User does not exist in the database. Please sync or create the user in the database first!",
       });
     }
 
@@ -84,12 +160,12 @@ class UserService {
   }
 
   // Contacts
-  private removeContact(req: Request, res: Response) {}
-  private createContact(req: Request, res: Response) {}
-  private updateContact(req: Request, res: Response) {}
-  private getContact(req: Request, res: Response) {}
-  private getAllContacts(req: Request, res: Response) {}
-  private createContactByQRCode(req: Request, res: Response) {}
+  private async removeContact(req: Request, res: Response) {}
+  private async createContact(req: Request, res: Response) {}
+  private async updateContact(req: Request, res: Response) {}
+  private async getContact(req: Request, res: Response) {}
+  private async getAllContacts(req: Request, res: Response) {}
+  private async createContactByQRCode(req: Request, res: Response) {}
 }
 
 export default new UserService();
