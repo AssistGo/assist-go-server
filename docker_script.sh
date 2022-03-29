@@ -6,12 +6,16 @@ read Username
 echo "What is your MongoDB Password? (Case-sensitive) "
 read Password
 
-echo "What is your Google Translate API Key (Case-sensitive) "
+echo "What is your RAPID API Google Translate Host (Case-sensitive) "
+read googleTranslateHost
+
+echo "What is your RAPID API Google Translate Key (Case-sensitive) "
 read googleTranslateKey
 
 echo "MONGO_USERNAME=${Username}" >> .env
 echo "MONGO_PASSWORD=${Password}" >> .env
-echo "GOOGLE_TRANSLATE_KEY=${googleTranslateKey}" >> .env
+echo "RAPID_API_GOOGLE_TRANSLATE_HOST=${googleTranslateHost}" >> .env
+echo "RAPID_API_GOOGLE_TRANSLATE_KEY=${googleTranslateKey}" >> .env
 
 
 npm install
