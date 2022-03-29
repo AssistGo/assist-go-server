@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { v4 } from "uuid";
-import codes, { by639_1, by639_2T, by639_2B } from "iso-language-codes";
 import UserModel from "../models/User.model";
 
 import CreateContactDto from "../dto/Contacts/CreateContact.dto";

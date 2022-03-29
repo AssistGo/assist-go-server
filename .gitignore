@@ -1,3 +1,4 @@
 node_modules/
 .env
 build/
+google_key.json
