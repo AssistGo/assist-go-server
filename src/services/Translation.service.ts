@@ -40,8 +40,8 @@ class TranslationService {
       headers: {
         "content-type": "application/x-www-form-urlencoded",
         "Accept-Encoding": "application/gzip",
-        "X-RapidAPI-Host": "google-translate1.p.rapidapi.com",
-        "X-RapidAPI-Key": "4191ab8170mshf1a1f601b8145bfp12f4f6jsn67b86ac05db0",
+        "X-RapidAPI-Host": process.env.RAPID_API_GOOGLE_TRANSLATE_HOST,
+        "X-RapidAPI-Key": process.env.RAPID_API_GOOGLE_TRANSLATE_KEY,
       },
       data: encodedParams,
     };
