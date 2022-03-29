@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import { v4 } from "uuid";
 import codes, { by639_1, by639_2T, by639_2B } from "iso-language-codes";
-import CreateNewUserDto from "../dto/CreateNewUser.dto";
 import UserModel from "../models/User.model";
-import { ChangeLanguageDto } from "../dto/ChangeCountryLanguage.dto";
-import GetUserInfoDto from "../dto/GetUserInfo.dto";
-import ChangeNumberDto from "../dto/ChangeNumber.dto";
+
+import CreateContactDto from "../dto/Contacts/CreateContact.dto";
+import { ChangeLanguageDto } from "../dto/User/ChangeCountryLanguage.dto";
+import ChangeNumberDto from "../dto/User/ChangeNumber.dto";
+import GetUserInfoDto from "../dto/User/GetUserInfo.dto";
+import CreateNewUserDto from "../dto/User/CreateNewUser.dto";
 
 class UserService {
   public actions;
@@ -26,7 +28,7 @@ class UserService {
       updateContact: this.updateContact,
       getContact: this.getContact,
       getAllContacts: this.getAllContacts,
-      createContactByQRCode: this.createContactByQRCode,
+      // createContactByQRCode: this.createContactByQRCode,
       changeLanguage: this.changeLanguage,
     };
   }
@@ -63,14 +65,14 @@ class UserService {
     const user = await UserModel.findOne({ id: id });
 
     if (!user) {
-      res.status(400).json({
+      return res.status(400).json({
         resStatus: "FAIL",
         message:
-          "User does not exist inthe database. Please sync or create the user in the database first.",
+          "User does not exist in the database. Please sync or create the user in the database first.",
       });
     }
 
-    res.json({
+    return res.json({
       resStatus: "SUCCESS",
       user: user,
       message: "Successfully returned user object!",
@@ -86,10 +88,10 @@ class UserService {
     );
 
     if (!user) {
-      res.status(400).json({
+      return res.status(400).json({
         resStatus: "FAIL",
         message:
-          "User does not exist inthe database. Please sync or create the user in the database first.",
+          "User does not exist in the database. Please sync or create the user in the database first.",
       });
     }
 
@@ -160,12 +162,128 @@ class UserService {
   }
 
   // Contacts
-  private async removeContact(req: Request, res: Response) {}
-  private async createContact(req: Request, res: Response) {}
-  private async updateContact(req: Request, res: Response) {}
-  private async getContact(req: Request, res: Response) {}
-  private async getAllContacts(req: Request, res: Response) {}
-  private async createContactByQRCode(req: Request, res: Response) {}
+
+  private async createContact(req: Request, res: Response) {
+    const newContact: CreateContactDto = req.body.newContact;
+    const id: String = req.body.id;
+
+    const user = await UserModel.findOneAndUpdate(
+      { id: id },
+      { $push: { contactList: newContact } },
+    );
+
+    if (!user) {
+      return res.status(400).json({
+        resStatus: "FAIL",
+        message:
+          "User does not exist in the database. Please sync or create the user in the database first.",
+      });
+    }
+
+    return res.json({
+      resStatus: true,
+      user: user,
+      message: "Successfully created added contact to user!",
+    });
+  }
+
+  private async removeContact(req: Request, res: Response) {
+    const userId: String = req.body.id;
+    const contactId: String = req.body.contactId;
+
+    const user = await UserModel.findOneAndUpdate(
+      { id: userId },
+      { $pull: { contactList: { id: contactId } } },
+    );
+
+    if (!user) {
+      return res.status(400).json({
+        resStatus: "FAIL",
+        message:
+          "User does not exist in the database. Please sync or create the user in the database first.",
+      });
+    }
+
+    return res.json({
+      resStatus: "SUCCESS",
+      contactList: user.contactList,
+      message: "Successfully returned the user's contact list!",
+    });
+  }
+
+  private async updateContact(req: Request, res: Response) {
+    const userId: String = req.body.id;
+    const updatedContact: String = req.body.contact;
+
+    const user = await UserModel.findOneAndUpdate(
+      { id: userId },
+      { $set: { "contactList.$": { ...updatedContact } } },
+    );
+
+    if (!user) {
+      return res.status(400).json({
+        resStatus: "FAIL",
+        message:
+          "User does not exist in the database. Please sync or create the user in the database first.",
+      });
+    }
+
+    return res.json({
+      resStatus: "SUCCESS",
+      contactList: user.contactList,
+      message: "Successfully returned the user's contact list!",
+    });
+  }
+
+  private async getContact(req: Request, res: Response) {
+    const userId: String = req.body.id;
+    const contactId: String = req.body.contactId;
+
+    const user = await UserModel.findOne({ id: userId });
+
+    if (!user) {
+      return res.status(400).json({
+        resStatus: "FAIL",
+        message:
+          "User does not exist in the database. Please sync or create the user in the database first.",
+      });
+    }
+
+    return res.json({
+      resStatus: "SUCCESS",
+      contactList: user.contactList.find(
+        (contact: CreateContactDto, index: Number) => {
+          return contact.id === contactId ? contact : undefined;
+        },
+      ),
+      message: "Successfully returned the user's contact list!",
+    });
+  }
+
+  private async getAllContacts(req: Request, res: Response) {
+    const id: String = req.body.id;
+
+    const user = await UserModel.findOne({ id: id });
+
+    if (!user) {
+      return res.status(400).json({
+        resStatus: "FAIL",
+        message:
+          "User does not exist in the database. Please sync or create the user in the database first.",
+      });
+    }
+
+    return res.json({
+      resStatus: "SUCCESS",
+      contactList: user.contactList,
+      message: "Successfully returned the user's contact list!",
+    });
+  }
+
+  // May not be necessary
+  // private async createContactByQRCode(req: Request, res: Response) {
+  //   // TODO
+  // }
 }
 
 export default new UserService();

@@ -48,10 +48,10 @@ class UserController {
       this.path + "/contact/all",
       UserService.actions.getAllContacts,
     );
-    this.router.post(
-      this.path + "/contact/qr",
-      UserService.actions.createContactByQRCode,
-    );
+    // this.router.post(
+    //   this.path + "/contact/qr",
+    //   UserService.actions.createContactByQRCode,
+    // );
   }
 }
 
