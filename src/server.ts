@@ -12,7 +12,7 @@ const PORT = 8080;
 import UserController from "./controllers/User.controller";
 import MessageController from "./controllers/Message.controller";
 import TwilioController from "./controllers/Twilio.controller";
-import TranslationController from "./controllers/Translation.controller";
+// import TranslationController from "./controllers/Translation.controller";
 
 // Middleware Imports
 import Logger from "./middleware/Logger.middleware";
