@@ -12,7 +12,7 @@ const PORT = 8080;
 import UserController from "./controllers/User.controller";
 import MessageController from "./controllers/Message.controller";
 import TwilioController from "./controllers/Twilio.controller";
-// import TranslationController from "./controllers/Translation.controller";
+import TranslationController from "./controllers/Translation.controller";
 
 // Middleware Imports
 import Logger from "./middleware/Logger.middleware";
@@ -36,7 +36,7 @@ app.use(Logger);
 app.use(UserController.router);
 app.use(MessageController.router);
 app.use(TwilioController.router);
-// app.use(TranslationController.router);
+app.use(TranslationController.router);
 
 // Index Path
 app.get("/", (req: Request, res: Response) => {
