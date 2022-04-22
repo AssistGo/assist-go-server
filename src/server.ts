@@ -2,8 +2,14 @@ import express, { Application, Request, Response } from "express";
 import "dotenv/config";
 import cors from "cors";
 
+import http from "http";
+import { Server as SocketIO } from "socket.io";
+
 // Express App
 const app: Application = express();
+
+const server = new http.Server(app);
+const io = new SocketIO(server);
 
 // Port Number
 const PORT = 8080;
@@ -45,7 +51,15 @@ app.get("/", (req: Request, res: Response) => {
     .json({ message: "Hello World! Welcome to AssistGo's Back End API!" });
 });
 
-// Opening server at the given port
-app.listen(PORT, () => {
+io.on("connection", (socket) => {
+  console.log("Socket");
+  socket.emit("message", "Welcome Back Bitch");
+
+  socket.on("message", (data) => {
+    socket.emit("message");
+  });
+});
+
+server.listen(PORT, () => {
   console.log(`AssistGo server running on port ${PORT}`);
 });
