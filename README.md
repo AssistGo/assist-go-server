@@ -8,6 +8,7 @@ This is the back end server for the AssistGo! app!
 - Express.js
 - TypeScript
 - MongoDB
+- Google Translate API (via RapidAPI)
 
 ## To install Dependencies
 
