@@ -59,7 +59,7 @@ class UserService {
 
   // User info
   private async getUserInfo(req: Request, res: Response) {
-    const id: GetUserInfoDto = req.body;
+    const id: String = req.params.user_id;
 
     const user = await UserModel.findOne({ id: id });
 
@@ -180,7 +180,7 @@ class UserService {
     }
 
     return res.json({
-      resStatus: true,
+      resStatus: "SUCCESS",
       user: user,
       message: "Successfully created added contact to user!",
     });
@@ -235,8 +235,8 @@ class UserService {
   }
 
   private async getContact(req: Request, res: Response) {
-    const userId: String = req.body.id;
-    const contactId: String = req.body.contactId;
+    const userId: String = req.params.user_id;
+    const contactId: String = req.params.contact_id;
 
     const user = await UserModel.findOne({ id: userId });
 
@@ -260,7 +260,7 @@ class UserService {
   }
 
   private async getAllContacts(req: Request, res: Response) {
-    const id: String = req.body.id;
+    const id: String = req.params.user_id;
 
     const user = await UserModel.findOne({ id: id });
 
