@@ -1,6 +1,15 @@
 import { Router } from "express";
 import UserService from "../services/User.service";
 
+import Multer from "multer";
+
+const multer = Multer({
+  storage: Multer.memoryStorage(),
+  limits: {
+    fileSize: 20 * 1024 * 1024, // No larger than 20mb, change as you need
+  },
+});
+
 class UserController {
   public path = "/users";
   public router = Router();
@@ -58,6 +67,12 @@ class UserController {
     this.router.get(
       this.path + "/contact/all/:user_id",
       UserService.actions.getAllContacts,
+    );
+
+    this.router.post(
+      "/profile/upload",
+      multer.single("imgfile"),
+      UserService.actions.uploadProfileImage,
     );
 
     // this.router.post(

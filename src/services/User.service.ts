@@ -7,6 +7,24 @@ import { ChangeLanguageDto } from "../dto/User/ChangeCountryLanguage.dto";
 import ChangeNumberDto from "../dto/User/ChangeNumber.dto";
 import GetUserInfoDto from "../dto/User/GetUserInfo.dto";
 import CreateNewUserDto from "../dto/User/CreateNewUser.dto";
+import path from "path";
+import { Storage } from "@google-cloud/storage";
+// import Multer from "multer";
+
+// const multer = Multer({
+//   storage: Multer.memoryStorage(),
+//   limits: {
+//     fileSize: 20 * 1024 * 1024, // No larger than 20mb, change as you need
+//   },
+// });
+
+let projectId = "crypto-triode-341517"; // Get this from Google Cloud
+let keyFilename = "../../google_keyfile.json"; // Get this from Google Cloud -> Credentials -> Service Accounts
+const storage = new Storage({
+  projectId,
+  keyFilename,
+});
+const bucket = storage.bucket("assistgo-bucket"); // Get this from Google Cloud -> Storage
 
 class UserService {
   public actions;
@@ -29,6 +47,7 @@ class UserService {
       getAllContacts: this.getAllContacts,
       // createContactByQRCode: this.createContactByQRCode,
       changeLanguage: this.changeLanguage,
+      uploadProfileImage: this.uploadProfileImage,
     };
   }
 
@@ -277,6 +296,31 @@ class UserService {
       contactList: user.contactList,
       message: "Successfully returned the user's contact list!",
     });
+  }
+
+  private async uploadProfileImage(req: Request, res: Response) {
+    try {
+      if (req.file) {
+        const blob = bucket.file(req.file.originalname);
+        const blobStream = blob.createWriteStream();
+
+        blobStream.on("finish", () => {
+          return res.json({ resStatus: "SUCCESS" });
+        });
+
+        blobStream.end(req.file.buffer);
+      } else {
+        res.status(400).json({
+          resStatus: "FAIL",
+          message: "The image was not found!",
+        });
+      }
+    } catch (error) {
+      res.status(400).json({
+        resStatus: "FAIL",
+        message: "The image was not uploaded successfully!",
+      });
+    }
   }
 
   // May not be necessary
