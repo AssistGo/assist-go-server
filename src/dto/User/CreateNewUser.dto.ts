@@ -6,6 +6,7 @@ export default interface CreateNewUserDto {
   fullPhoneNumber: String;
   fullName?: String;
   profileImageUrl: String;
+  hasSimCard: Boolean;
   contactList: [
     {
       id: String;
@@ -15,6 +16,7 @@ export default interface CreateNewUserDto {
       fullPhoneNumber: String;
       fullName?: String;
       profileImageUrl: String;
+      hasSimCard: Boolean;
     },
   ];
 }

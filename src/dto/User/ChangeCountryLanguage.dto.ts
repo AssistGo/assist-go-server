@@ -1,7 +1,7 @@
-export interface ChangeLanguageDto {
-  id: String;
-  language: String;
-}
+// export interface ChangeLanguageDto {
+//   id: String;
+//   language: String;
+// }
 
 export interface ChangeCountryDto {
   id: String;
