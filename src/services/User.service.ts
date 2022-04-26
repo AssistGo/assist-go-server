@@ -3,11 +3,10 @@ import { v4 } from "uuid";
 import UserModel from "../models/User.model";
 
 import CreateContactDto from "../dto/Contacts/CreateContact.dto";
-import { ChangeLanguageDto } from "../dto/User/ChangeCountryLanguage.dto";
+// import { ChangeLanguageDto } from "../dto/User/ChangeCountryLanguage.dto";
 import ChangeNumberDto from "../dto/User/ChangeNumber.dto";
 import GetUserInfoDto from "../dto/User/GetUserInfo.dto";
 import CreateNewUserDto from "../dto/User/CreateNewUser.dto";
-import path from "path";
 import { Storage } from "@google-cloud/storage";
 // import Multer from "multer";
 
@@ -19,7 +18,7 @@ import { Storage } from "@google-cloud/storage";
 // });
 
 let projectId = "crypto-triode-341517"; // Get this from Google Cloud
-let keyFilename = "../../google_keyfile.json"; // Get this from Google Cloud -> Credentials -> Service Accounts
+let keyFilename = "google_keyfile.json"; // Get this from Google Cloud -> Credentials -> Service Accounts
 const storage = new Storage({
   projectId,
   keyFilename,
@@ -46,8 +45,10 @@ class UserService {
       getContact: this.getContact,
       getAllContacts: this.getAllContacts,
       // createContactByQRCode: this.createContactByQRCode,
-      changeLanguage: this.changeLanguage,
+      // changeLanguage: this.changeLanguage,
       uploadProfileImage: this.uploadProfileImage,
+      userExists: this.userExists,
+      hasSimCard: this.hasSimCard,
     };
   }
 
@@ -93,6 +94,47 @@ class UserService {
     return res.json({
       resStatus: "SUCCESS",
       user: user,
+      message: "Successfully returned user object!",
+    });
+  }
+
+  private async userExists(req: Request, res: Response) {
+    const id: String = req.params.user_id;
+
+    const user = await UserModel.findOne({ id: id });
+
+    if (!user) {
+      return res.status(400).json({
+        resStatus: "FAIL",
+        exists: false,
+        message:
+          "User does not exist in the database. Please sync or create the user in the database first.",
+      });
+    }
+
+    return res.json({
+      resStatus: "SUCCESS",
+      exists: true,
+      message: "Successfully returned user object!",
+    });
+  }
+
+  private async hasSimCard(req: Request, res: Response) {
+    const id: String = req.params.user_id;
+
+    const user = await UserModel.findOne({ id: id });
+
+    if (!user) {
+      return res.status(400).json({
+        resStatus: "FAIL",
+        message:
+          "User does not exist in the database. Please sync or create the user in the database first.",
+      });
+    }
+
+    return res.json({
+      resStatus: "SUCCESS",
+      hasSimCard: user.hasSimCard,
       message: "Successfully returned user object!",
     });
   }
@@ -156,28 +198,28 @@ class UserService {
     });
   }
 
-  private async changeLanguage(req: Request, res: Response) {
-    const languageDto: ChangeLanguageDto = req.body.language;
+  // private async changeLanguage(req: Request, res: Response) {
+  //   const languageDto: ChangeLanguageDto = req.body.language;
 
-    const user = await UserModel.findOneAndUpdate(
-      { id: languageDto.id },
-      { language: languageDto.language },
-    );
+  //   const user = await UserModel.findOneAndUpdate(
+  //     { id: languageDto.id },
+  //     { language: languageDto.language },
+  //   );
 
-    if (!user) {
-      return res.status(400).json({
-        resStatus: "FAIL",
-        message:
-          "User does not exist in the database. Please sync or create the user in the database first!",
-      });
-    }
+  //   if (!user) {
+  //     return res.status(400).json({
+  //       resStatus: "FAIL",
+  //       message:
+  //         "User does not exist in the database. Please sync or create the user in the database first!",
+  //     });
+  //   }
 
-    return res.json({
-      resStatus: "SUCCESS",
-      user: user,
-      message: "Successfully changed the user's language preference!",
-    });
-  }
+  //   return res.json({
+  //     resStatus: "SUCCESS",
+  //     user: user,
+  //     message: "Successfully changed the user's language preference!",
+  //   });
+  // }
 
   // Contacts
 
@@ -301,14 +343,63 @@ class UserService {
   private async uploadProfileImage(req: Request, res: Response) {
     try {
       if (req.file) {
-        const blob = bucket.file(req.file.originalname);
+        const base_url = "https://storage.googleapis.com/assistgo-bucket/";
+        console.log(req.file.originalname);
+
+        const full_new_file_name =
+          v4() + req.file.originalname.split(".").pop();
+
+        const blob = bucket.file(full_new_file_name);
         const blobStream = blob.createWriteStream();
 
-        blobStream.on("finish", () => {
-          return res.json({ resStatus: "SUCCESS" });
-        });
+        const url = base_url + full_new_file_name;
+
+        const id: String = req.params.user_id;
+
+        let status = false;
+
+        const user = await UserModel.findOneAndUpdate(
+          { id: id },
+          { profileImageUrl: url },
+        );
+
+        if (!user) {
+          return res.status(400).json({
+            resStatus: "FAIL",
+            message:
+              "User does not exist in the database. Please sync or create the user in the database first.",
+          });
+        } else {
+          status = true;
+        }
+
+        if (status === true) {
+          const users = await UserModel.find({});
+
+          for (let i = 0; i < users.length; i++) {
+            users[i].contactList.forEach(async (contact: any) => {
+              if (contact.id == id) {
+                await UserModel.updateOne(
+                  { id: users[i].id },
+                  {
+                    $set: {
+                      "contactList.$[a0].profileImageUrl": url,
+                    },
+                  },
+                  {
+                    arrayFilters: [{ "a0.id": id }],
+                  },
+                );
+              }
+            });
+          }
+        }
 
         blobStream.end(req.file.buffer);
+
+        blobStream.on("finish", async () => {
+          return res.json({ resStatus: "SUCCESS", imageUrl: url });
+        });
       } else {
         res.status(400).json({
           resStatus: "FAIL",

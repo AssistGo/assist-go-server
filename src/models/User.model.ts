@@ -9,7 +9,8 @@ const User = new Schema({
   fullPhoneNumber: { type: String, unique: true, required: true }, // Phone Number with country code
   fullName: { type: String, unique: false, required: false }, // Full Name
   profileImageUrl: { type: String, unique: false, required: true }, // Profile Image Url
-  language: { type: String, unique: false, required: true },
+  // language: { type: String, unique: false, required: true },
+  hasSimCard: { type: Boolean, unique: false, required: true },
   contactList: [
     // Array of Contacts
     new Schema({
@@ -20,6 +21,7 @@ const User = new Schema({
       fullPhoneNumber: { type: String, unique: true, required: true }, // Phone Number with country code
       fullName: { type: String, unique: false, required: false }, // Full Name
       profileImageUrl: { type: String, unique: false, required: true }, // Profile Image Url
+      hasSimCard: { type: Boolean, unique: false, required: true },
     }),
   ],
 });

@@ -29,6 +29,16 @@ class UserController {
     // User Info
     this.router.post(this.path + "/info", UserService.actions.getUserInfo);
 
+    this.router.get(
+      this.path + "/userExists/:user_id",
+      UserService.actions.userExists,
+    );
+
+    this.router.get(
+      this.path + "/hasSimCard/:user_id",
+      UserService.actions.hasSimCard,
+    );
+
     this.router.put(
       this.path + "/changeNumber",
       UserService.actions.changePhoneNumber,
@@ -44,10 +54,10 @@ class UserController {
       UserService.actions.deleteAccount,
     );
 
-    this.router.put(
-      this.path + "/language",
-      UserService.actions.changeLanguage,
-    );
+    // this.router.put(
+    //   this.path + "/language",
+    //   UserService.actions.changeLanguage,
+    // );
 
     // Contacts
     this.router.delete(
@@ -70,7 +80,7 @@ class UserController {
     );
 
     this.router.post(
-      "/profile/upload",
+      this.path + "/profile/upload/:user_id",
       multer.single("imgfile"),
       UserService.actions.uploadProfileImage,
     );
