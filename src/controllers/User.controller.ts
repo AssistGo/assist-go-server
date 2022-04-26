@@ -85,6 +85,26 @@ class UserController {
       UserService.actions.uploadProfileImage,
     );
 
+    this.router.post(
+      this.path + "/call/add",
+      UserService.actions.addToCallHistory,
+    );
+
+    this.router.get(
+      this.path + "/call/history/:user_id",
+      UserService.actions.getCallHistory,
+    );
+
+    this.router.post(
+      this.path + "/call/history/remove",
+      UserService.actions.removeFromCallHistory,
+    );
+
+    this.router.post(
+      this.path + "/call/history/clear",
+      UserService.actions.clearCallHistory,
+    );
+
     // this.router.post(
     //   this.path + "/contact/qr",
     //   UserService.actions.createContactByQRCode,
