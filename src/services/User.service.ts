@@ -49,6 +49,10 @@ class UserService {
       uploadProfileImage: this.uploadProfileImage,
       userExists: this.userExists,
       hasSimCard: this.hasSimCard,
+      addToCallHistory: this.addToCallHistory,
+      getCallHistory: this.getCallHistory,
+      removeFromCallHistory: this.removeFromCallHistory,
+      clearCallHistory: this.clearCallHistory,
     };
   }
 
@@ -243,7 +247,126 @@ class UserService {
     return res.json({
       resStatus: "SUCCESS",
       user: user,
-      message: "Successfully created added contact to user!",
+      message: "Successfully added contact to user!",
+    });
+  }
+
+  private async addToCallHistory(req: Request, res: Response) {
+    const id: String = req.body.id;
+    const caller_id: String = req.body.caller_id;
+
+    const caller = await UserModel.findOne({ id: caller_id });
+
+    const user = await UserModel.findOne({ id: id });
+
+    if (!user || !caller) {
+      return res.status(400).json({
+        resStatus: "FAIL",
+        message:
+          "User does not exist in the database. Please sync or create the user in the database first.",
+      });
+    }
+
+    const newUser = await UserModel.updateOne(
+      { id: id },
+      {
+        $push: {
+          callHistory: {
+            historyId: v4(),
+            ...caller,
+            timeOfContact: new Date(),
+            callHistory: undefined,
+            contactList: undefined,
+          },
+        },
+      },
+    );
+    const newCaller = await UserModel.updateOne(
+      { id: caller_id },
+      {
+        $push: {
+          callHistory: {
+            historyId: v4(),
+            ...user,
+            timeOfContact: new Date(),
+            callHistory: undefined,
+            contactList: undefined,
+          },
+        },
+      },
+    );
+
+    return res.json({
+      resStatus: "SUCCESS",
+      user: newUser,
+      message: "Successfully added call to user!",
+    });
+  }
+
+  private async getCallHistory(req: Request, res: Response) {
+    const id: String = req.params.user_id;
+
+    const user = await UserModel.findOne({ id: id });
+
+    if (!user) {
+      return res.status(400).json({
+        resStatus: "FAIL",
+        message:
+          "User does not exist in the database. Please sync or create the user in the database first.",
+      });
+    }
+
+    return res.json({
+      resStatus: "SUCCESS",
+      callHistory: user.callHistory,
+      message: "Successfully returned the user's call history!",
+    });
+  }
+
+  private async removeFromCallHistory(req: Request, res: Response) {
+    const userId: String = req.body.id;
+    const callId: String = req.body.callId;
+
+    const user = await UserModel.findOneAndUpdate(
+      { id: userId },
+      { $pull: { callHistory: { historyId: callId } } },
+    );
+
+    if (!user) {
+      return res.status(400).json({
+        resStatus: "FAIL",
+        message:
+          "User does not exist in the database. Please sync or create the user in the database first.",
+      });
+    }
+
+    return res.json({
+      resStatus: "SUCCESS",
+      callHistory: user.callHistory,
+      message: "Successfully removed the call from the user's call history!",
+    });
+  }
+
+  private async clearCallHistory(req: Request, res: Response) {
+    const userId: String = req.body.id;
+
+    const user = await UserModel.findOneAndUpdate(
+      { id: userId },
+      { callHistory: [] },
+    );
+
+    if (!user) {
+      return res.status(400).json({
+        resStatus: "FAIL",
+        message:
+          "User does not exist in the database. Please sync or create the user in the database first.",
+      });
+    }
+
+    return res.json({
+      resStatus: "SUCCESS",
+      user: user,
+      message: "Successfully cleared the user's call history!",
     });
   }
 

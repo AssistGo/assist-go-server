@@ -6,4 +6,5 @@ export default interface CreateContactDto {
   fullPhoneNumber: String;
   fullName?: String;
   profileImageUrl: String;
+  hasSimCard: Boolean;
 }

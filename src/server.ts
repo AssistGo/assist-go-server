@@ -9,7 +9,7 @@ import { Server as SocketIO } from "socket.io";
 const app: Application = express();
 
 const server = new http.Server(app);
-const io = new SocketIO(server);
+// const io = new SocketIO(server);
 
 // Port Number
 const PORT = 8080;
@@ -49,15 +49,6 @@ app.get("/", (req: Request, res: Response) => {
   return res
     .status(200)
     .json({ message: "Hello World! Welcome to AssistGo's Back End API!" });
-});
-
-io.on("connection", (socket) => {
-  console.log("Socket");
-  socket.emit("message", "Welcome Back Bitch");
-
-  socket.on("message", (data) => {
-    socket.emit("message");
-  });
 });
 
 server.listen(PORT, () => {
