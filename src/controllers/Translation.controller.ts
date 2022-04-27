@@ -10,7 +10,7 @@ class TwilioController {
   }
 
   private initializeRoutes() {
-    this.router.get(
+    this.router.post(
       this.path + "/translate/:from/:to",
       TranslationService.actions.translate,
     );
