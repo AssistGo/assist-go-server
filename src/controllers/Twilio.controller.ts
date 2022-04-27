@@ -10,10 +10,14 @@ class TwilioController {
   }
 
   private initializeRoutes() {
-    this.router.post(
-      this.path + "/passcode",
-      TwilioService.actions.sendPasscode,
-    );
+    // this.router.post(
+    //   this.path + "/passcode",
+    //   TwilioService.actions.sendPasscode,
+    // );
+    // this.router.post(
+    //   this.path + "/createToken",
+    //   TwilioService.actions.createToken,
+    // );
   }
 }
 

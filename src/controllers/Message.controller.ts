@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAllMessagesFromConversation } from "../services/Message.service";
+import MessageService from "../services/Message.service";
 
 class MessageController {
   public path = "/messages";
@@ -9,12 +9,7 @@ class MessageController {
     this.initializeRoutes();
   }
 
-  public initializeRoutes() {
-    this.router.get(
-      this.path + "/test/conversation",
-      getAllMessagesFromConversation,
-    );
-  }
+  public initializeRoutes() {}
 }
 
 export default new MessageController();

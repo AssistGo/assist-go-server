@@ -23,6 +23,7 @@ import TranslationController from "./controllers/Translation.controller";
 // Middleware Imports
 import Logger from "./middleware/Logger.middleware";
 import connectDatabase from "./middleware/Database.middleware";
+import GoogleTextToSpeechControllerController from "./controllers/GoogleTextToSpeechController.controller";
 
 // Connection to MongoDB Database
 connectDatabase();
@@ -43,6 +44,7 @@ app.use(UserController.router);
 app.use(MessageController.router);
 app.use(TwilioController.router);
 app.use(TranslationController.router);
+app.use(GoogleTextToSpeechControllerController.router);
 
 // Index Path
 app.get("/", (req: Request, res: Response) => {

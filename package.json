@@ -16,6 +16,7 @@
     "@types/express-ws": "^3.0.1",
     "@types/multer": "^1.4.7",
     "@types/socket.io": "^3.0.2",
+    "@types/twilio": "^3.19.3",
     "@types/uuid": "^8.3.4",
     "@types/websocket": "^1.0.5",
     "axios": "^0.26.1",
@@ -29,6 +30,7 @@
     "path": "^0.12.7",
     "socket.io": "^4.4.1",
     "translate": "^1.4.1",
+    "twilio": "^3.76.1",
     "uuid": "^8.3.2",
     "uuidv4": "^6.2.12",
     "websocket": "^1.0.34"
