@@ -27,7 +27,7 @@ class UserController {
     this.router.post(this.path + "/sync", UserService.actions.syncUserData);
 
     // User Info
-    this.router.post(this.path + "/info", UserService.actions.getUserInfo);
+    this.router.get(this.path + "/info", UserService.actions.getUserInfo);
 
     this.router.get(this.path + "/userExists", UserService.actions.userExists);
 
