@@ -7,7 +7,7 @@ export default interface CreateNewUserDto {
   fullName?: String;
   profileImageUrl: String;
   hasSimCard: Boolean;
-  callHistory: [
+  callHistory?: [
     {
       historyId: String;
       id: String;
@@ -21,7 +21,7 @@ export default interface CreateNewUserDto {
       timeOfContact: Date;
     },
   ];
-  contactList: [
+  contactList?: [
     {
       id: String;
       country: String;
