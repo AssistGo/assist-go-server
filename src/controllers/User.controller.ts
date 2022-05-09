@@ -17,7 +17,7 @@ class UserController {
   constructor() {
     this.initializeRoutes();
   }
-  //http://34.73.16.73:8080/users/sync
+
   private initializeRoutes() {
     // Test Routes
     // this.router.get(this.path + "/test/all", UserService);
@@ -29,25 +29,16 @@ class UserController {
     // User Info
     this.router.post(this.path + "/info", UserService.actions.getUserInfo);
 
-    this.router.get(
-      this.path + "/userExists/:user_id",
-      UserService.actions.userExists,
-    );
+    this.router.get(this.path + "/userExists", UserService.actions.userExists);
 
-    this.router.get(
-      this.path + "/hasSimCard/:user_id",
-      UserService.actions.hasSimCard,
-    );
+    this.router.get(this.path + "/hasSimCard", UserService.actions.hasSimCard);
 
     this.router.put(
       this.path + "/changeNumber",
       UserService.actions.changePhoneNumber,
     );
 
-    this.router.put(
-      this.path + "/info/:user_id",
-      UserService.actions.changeUserInfo,
-    );
+    this.router.put(this.path + "/info", UserService.actions.changeUserInfo);
 
     this.router.delete(
       this.path + "/delete",
@@ -69,18 +60,15 @@ class UserController {
 
     this.router.put(this.path + "/contact", UserService.actions.updateContact);
 
-    this.router.get(
-      this.path + "/contact/:user_id/:contact_id",
-      UserService.actions.getContact,
-    );
+    this.router.get(this.path + "/contact", UserService.actions.getContact);
 
     this.router.get(
-      this.path + "/contact/all/:user_id",
+      this.path + "/contact/all",
       UserService.actions.getAllContacts,
     );
 
     this.router.post(
-      this.path + "/profile/upload/:user_id",
+      this.path + "/profile/upload",
       multer.single("imgfile"),
       UserService.actions.uploadProfileImage,
     );
@@ -91,7 +79,7 @@ class UserController {
     );
 
     this.router.get(
-      this.path + "/call/history/:user_id",
+      this.path + "/call/history",
       UserService.actions.getCallHistory,
     );
 

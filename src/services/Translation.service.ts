@@ -19,7 +19,7 @@ class TranslationService {
   private async translate(req: Request, res: Response) {
     const sourceLang: string = req.params.from;
     const destinationLang: string = req.params.to;
-    const message: string = JSON.parse(req.body).message;
+    const message: string = req.body.message;
 
     if (!destinationLang || !message) {
       return res.status(400).json({

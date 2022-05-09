@@ -3,7 +3,7 @@ import "dotenv/config";
 import cors from "cors";
 
 import http from "http";
-import { Server as SocketIO } from "socket.io";
+// import { Server as SocketIO } from "socket.io";
 
 // Express App
 const app: Application = express();
@@ -53,6 +53,7 @@ app.get("/", (req: Request, res: Response) => {
     .json({ message: "Hello World! Welcome to AssistGo's Back End API!" });
 });
 
+// http://34.73.16.73:8080
 server.listen(PORT, () => {
   console.log(`AssistGo server running on port ${PORT}`);
 });

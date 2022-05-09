@@ -1,0 +1,84 @@
+{
+  "user": {
+    "id": "USER1",
+    "country": "USA",
+    "countryCode": "+1",
+    "phoneNumber": "5186034356",
+    "fullPhoneNumber": "+15186034356",
+    "fullName": "DanielNofulla",
+    "profileImageUrl": "https://media-exp1.licdn.com/dms/image/C4E03AQHaeuTRGV7uOg/profile-displayphoto-shrink_800_800/0/1651819345739?e=1657152000&v=beta&t=NRqy6cyRSyJznYi6t7c7Bvaqd6YhzmbVqISNOkFOLJE",
+    "hasSimCard": true,
+    "callHistory": [
+      {
+        "historyId": "HISTORY1USER1",
+        "id": "USER2",
+        "country": "USA",
+        "countryCode": "+1",
+        "phoneNumber": "5186034356",
+        "fullPhoneNumber": "+15186034356",
+        "fullName": "DanielSWE",
+        "profileImageUrl": "https://media-exp1.licdn.com/dms/image/C4E03AQHaeuTRGV7uOg/profile-displayphoto-shrink_800_800/0/1651819345739?e=1657152000&v=beta&t=NRqy6cyRSyJznYi6t7c7Bvaqd6YhzmbVqISNOkFOLJE",
+        "hasSimCard": true,
+        "timeOfContact": 1651822206
+      },
+      {
+        "historyId": "HISTORY1USER1",
+        "id": "USER2",
+        "country": "USA",
+        "countryCode": "+1",
+        "phoneNumber": "5186034356",
+        "fullPhoneNumber": "+15186034356",
+        "fullName": "DanielSWE",
+        "profileImageUrl": "https://media-exp1.licdn.com/dms/image/C4E03AQHaeuTRGV7uOg/profile-displayphoto-shrink_800_800/0/1651819345739?e=1657152000&v=beta&t=NRqy6cyRSyJznYi6t7c7Bvaqd6YhzmbVqISNOkFOLJE",
+        "hasSimCard": true,
+        "timeOfContact": 1651822206
+      },
+      {
+        "historyId": "HISTORY1USER1",
+        "id": "USER2",
+        "country": "USA",
+        "countryCode": "+1",
+        "phoneNumber": "5186034356",
+        "fullPhoneNumber": "+15186034356",
+        "fullName": "DanielSWE",
+        "profileImageUrl": "https://media-exp1.licdn.com/dms/image/C4E03AQHaeuTRGV7uOg/profile-displayphoto-shrink_800_800/0/1651819345739?e=1657152000&v=beta&t=NRqy6cyRSyJznYi6t7c7Bvaqd6YhzmbVqISNOkFOLJE",
+        "hasSimCard": true,
+        "timeOfContact": 1651822206
+      },
+      {
+        "historyId": "HISTORY1USER1",
+        "id": "USER2",
+        "country": "USA",
+        "countryCode": "+1",
+        "phoneNumber": "5186034356",
+        "fullPhoneNumber": "+15186034356",
+        "fullName": "DanielSWE",
+        "profileImageUrl": "https://media-exp1.licdn.com/dms/image/C4E03AQHaeuTRGV7uOg/profile-displayphoto-shrink_800_800/0/1651819345739?e=1657152000&v=beta&t=NRqy6cyRSyJznYi6t7c7Bvaqd6YhzmbVqISNOkFOLJE",
+        "hasSimCard": true,
+        "timeOfContact": 1651822206
+      }
+    ],
+    "contactList": [
+      {
+        "id": "USER2",
+        "country": "USA",
+        "countryCode": "+1",
+        "phoneNumber": "5186034356",
+        "fullPhoneNumber": "+15186034356",
+        "fullName": "DanielSWE",
+        "profileImageUrl": "https://media-exp1.licdn.com/dms/image/C4E03AQHaeuTRGV7uOg/profile-displayphoto-shrink_800_800/0/1651819345739?e=1657152000&v=beta&t=NRqy6cyRSyJznYi6t7c7Bvaqd6YhzmbVqISNOkFOLJE",
+        "hasSimCard": true
+      },
+      {
+        "id": "USER3",
+        "country": "USA",
+        "countryCode": "+1",
+        "phoneNumber": "5186034356",
+        "fullPhoneNumber": "+15186034356",
+        "fullName": "DanielQWERTY",
+        "profileImageUrl": "https://media-exp1.licdn.com/dms/image/C4E03AQHaeuTRGV7uOg/profile-displayphoto-shrink_800_800/0/1651819345739?e=1657152000&v=beta&t=NRqy6cyRSyJznYi6t7c7Bvaqd6YhzmbVqISNOkFOLJE",
+        "hasSimCard": true
+      }
+    ]
+  }
+}

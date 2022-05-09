@@ -58,32 +58,36 @@ class UserService {
 
   // Sync OR Create User
   private async syncUserData(req: Request, res: Response) {
-    const userDto: CreateNewUserDto = req.body.user;
-    const createOrSync: String = req.body.createOrSync;
+    console.log("User Sync");
+    console.log(JSON.parse(JSON.parse(req.body)));
+    const userDto: CreateNewUserDto = JSON.parse(JSON.parse(req.body)).user;
+
+    console.log(userDto);
+
+    const userDB = await UserModel.findOne({ id: userDto.id });
 
     if (!userDto) {
       return res
         .status(400)
-        .json({ resStatus: "FAIL", message: "Inaccurate Object Schema" });
+        .json({ resStatus: "FAIL", message: "User not found!" });
     }
 
-    createOrSync === "CREATE"
-      ? await UserModel.create(userDto)
-      : await UserModel.updateOne({ id: userDto.id }, userDto);
+    if (!userDB) {
+      await UserModel.create(userDto);
+    } else {
+      await UserModel.updateOne({ id: userDto.id }, userDto);
+    }
 
     return res.json({
       resStatus: "SUCCESS",
       user: userDto,
-      message:
-        "Successfully " +
-        (createOrSync === "CREATE" ? "created" : "synced") +
-        " user!",
+      message: "Successfully synced user",
     });
   }
 
   // User info
   private async getUserInfo(req: Request, res: Response) {
-    const id: String = req.params.user_id;
+    const id = req.query.user_id;
 
     const user = await UserModel.findOne({ id: id });
 
@@ -103,7 +107,7 @@ class UserService {
   }
 
   private async userExists(req: Request, res: Response) {
-    const id: String = req.params.user_id;
+    const id = req.query.user_id;
 
     const user = await UserModel.findOne({ id: id });
 
@@ -118,13 +122,14 @@ class UserService {
 
     return res.json({
       resStatus: "SUCCESS",
+      user: user,
       exists: true,
       message: "Successfully returned user object!",
     });
   }
 
   private async hasSimCard(req: Request, res: Response) {
-    const id: String = req.params.user_id;
+    const id = req.query.user_id;
 
     const user = await UserModel.findOne({ id: id });
 
@@ -144,7 +149,7 @@ class UserService {
   }
 
   private async changePhoneNumber(req: Request, res: Response) {
-    const changePhoneNumber: ChangeNumberDto = req.body;
+    const changePhoneNumber: ChangeNumberDto = JSON.parse(JSON.parse(req.body));
 
     const user = await UserModel.findOneAndUpdate(
       { id: changePhoneNumber.id },
@@ -167,7 +172,7 @@ class UserService {
   }
 
   private async changeUserInfo(req: Request, res: Response) {
-    const userDto: CreateNewUserDto = req.body.user;
+    const userDto: CreateNewUserDto = JSON.parse(JSON.parse(req.body)).user;
 
     if (!userDto) {
       return res
@@ -185,7 +190,7 @@ class UserService {
   }
 
   private async deleteAccount(req: Request, res: Response) {
-    const id: String = req.body.id;
+    const id = req.query.id;
 
     const user = await UserModel.findOneAndDelete({ id });
 
@@ -203,7 +208,7 @@ class UserService {
   }
 
   // private async changeLanguage(req: Request, res: Response) {
-  //   const languageDto: ChangeLanguageDto = req.body.language;
+  //   const languageDto: ChangeLanguageDto = JSON.parse(JSON.parse(req.body)).language;
 
   //   const user = await UserModel.findOneAndUpdate(
   //     { id: languageDto.id },
@@ -228,8 +233,10 @@ class UserService {
   // Contacts
 
   private async createContact(req: Request, res: Response) {
-    const newContact: CreateContactDto = req.body.newContact;
-    const id: String = req.body.id;
+    const newContact: CreateContactDto = JSON.parse(
+      JSON.parse(req.body),
+    ).newContact;
+    const id: String = JSON.parse(JSON.parse(req.body)).id;
 
     const user = await UserModel.findOneAndUpdate(
       { id: id },
@@ -252,8 +259,8 @@ class UserService {
   }
 
   private async addToCallHistory(req: Request, res: Response) {
-    const id: String = req.body.id;
-    const caller_id: String = req.body.caller_id;
+    const id: String = JSON.parse(JSON.parse(req.body)).id;
+    const caller_id: String = JSON.parse(JSON.parse(req.body)).caller_id;
 
     const caller = await UserModel.findOne({ id: caller_id });
 
@@ -304,7 +311,7 @@ class UserService {
   }
 
   private async getCallHistory(req: Request, res: Response) {
-    const id: String = req.params.user_id;
+    const id = req.query.user_id;
 
     const user = await UserModel.findOne({ id: id });
 
@@ -324,8 +331,8 @@ class UserService {
   }
 
   private async removeFromCallHistory(req: Request, res: Response) {
-    const userId: String = req.body.id;
-    const callId: String = req.body.callId;
+    const userId: String = JSON.parse(JSON.parse(req.body)).id;
+    const callId: String = JSON.parse(JSON.parse(req.body)).callId;
 
     const user = await UserModel.findOneAndUpdate(
       { id: userId },
@@ -348,7 +355,7 @@ class UserService {
   }
 
   private async clearCallHistory(req: Request, res: Response) {
-    const userId: String = req.body.id;
+    const userId: String = JSON.parse(JSON.parse(req.body)).id;
 
     const user = await UserModel.findOneAndUpdate(
       { id: userId },
@@ -371,8 +378,8 @@ class UserService {
   }
 
   private async removeContact(req: Request, res: Response) {
-    const userId: String = req.body.id;
-    const contactId: String = req.body.contactId;
+    const userId: String = JSON.parse(JSON.parse(req.body)).id;
+    const contactId: String = JSON.parse(JSON.parse(req.body)).contactId;
 
     const user = await UserModel.findOneAndUpdate(
       { id: userId },
@@ -395,8 +402,8 @@ class UserService {
   }
 
   private async updateContact(req: Request, res: Response) {
-    const userId: String = req.body.id;
-    const updatedContact: String = req.body.contact;
+    const userId: String = JSON.parse(JSON.parse(req.body)).id;
+    const updatedContact: String = JSON.parse(JSON.parse(req.body)).contact;
 
     const user = await UserModel.findOneAndUpdate(
       { id: userId },
@@ -419,8 +426,8 @@ class UserService {
   }
 
   private async getContact(req: Request, res: Response) {
-    const userId: String = req.params.user_id;
-    const contactId: String = req.params.contact_id;
+    const userId = req.query.user_id;
+    const contactId = req.query.contact_id;
 
     const user = await UserModel.findOne({ id: userId });
 
@@ -444,7 +451,7 @@ class UserService {
   }
 
   private async getAllContacts(req: Request, res: Response) {
-    const id: String = req.params.user_id;
+    const id = req.query.user_id;
 
     const user = await UserModel.findOne({ id: id });
 
@@ -477,7 +484,7 @@ class UserService {
 
         const url = base_url + full_new_file_name;
 
-        const id: String = req.params.user_id;
+        const id = req.query.user_id;
 
         let status = false;
 
