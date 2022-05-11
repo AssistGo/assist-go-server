@@ -11,6 +11,7 @@
   "author": "AssistGo Team",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/speech": "^4.10.2",
     "@google-cloud/storage": "^5.19.3",
     "@types/axios": "^0.14.0",
     "@types/express-ws": "^3.0.1",

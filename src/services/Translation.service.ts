@@ -17,9 +17,11 @@ class TranslationService {
 
   // Translate
   private async translate(req: Request, res: Response) {
+    console.log("XD");
     const sourceLang: string = req.params.from;
     const destinationLang: string = req.params.to;
     const message: string = req.body.message;
+    console.log("Message: ", message);
 
     if (!destinationLang || !message) {
       return res.status(400).json({
@@ -48,6 +50,11 @@ class TranslationService {
 
     Axios.request(options)
       .then((response) => {
+        console.log({
+          resStatus: "SUCCESS",
+          translation: response.data.data.translations[0].translatedText,
+          message: `Translation of '${message}', received!`,
+        });
         return res.json({
           resStatus: "SUCCESS",
           translation: response.data.data.translations[0].translatedText,
@@ -55,7 +62,6 @@ class TranslationService {
         });
       })
       .catch((error) => {
-        console.log(error);
         return res.status(400).json({
           resStatus: "FAIL",
           message:
