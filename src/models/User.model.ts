@@ -13,7 +13,7 @@ const User = new Schema({
   hasSimCard: { type: Boolean, unique: false, required: true },
   callHistory: [
     new Schema({
-      historyId: { type: String, unique: true, required: true },
+      historyId: { type: String, unique: false, required: true },
       id: { type: String, unique: false, required: true }, // Contact User's Id
       country: { type: String, unique: false, required: true }, // Country Name / Code
       countryCode: { type: String, unique: false, required: true }, // Country Phone Number Code
