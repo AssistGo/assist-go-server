@@ -59,8 +59,9 @@ class UserService {
   // Sync OR Create User
   private async syncUserData(req: Request, res: Response) {
     console.log("User Sync");
-    console.log(JSON.parse(JSON.parse(req.body)));
-    const userDto: CreateNewUserDto = JSON.parse(JSON.parse(req.body)).user;
+
+    console.log(req.body);
+    const userDto = req.body.user;
 
     console.log(userDto);
 
@@ -149,7 +150,7 @@ class UserService {
   }
 
   private async changePhoneNumber(req: Request, res: Response) {
-    const changePhoneNumber: ChangeNumberDto = JSON.parse(JSON.parse(req.body));
+    const changePhoneNumber: ChangeNumberDto = req.body;
 
     const user = await UserModel.findOneAndUpdate(
       { id: changePhoneNumber.id },
@@ -172,7 +173,7 @@ class UserService {
   }
 
   private async changeUserInfo(req: Request, res: Response) {
-    const userDto: CreateNewUserDto = JSON.parse(JSON.parse(req.body)).user;
+    const userDto = req.body.user;
 
     if (!userDto) {
       return res
@@ -233,10 +234,8 @@ class UserService {
   // Contacts
 
   private async createContact(req: Request, res: Response) {
-    const newContact: CreateContactDto = JSON.parse(
-      JSON.parse(req.body),
-    ).newContact;
-    const id: String = JSON.parse(JSON.parse(req.body)).id;
+    const newContact: CreateContactDto = req.body.newContact;
+    const id: String = req.body.id;
 
     const user = await UserModel.findOneAndUpdate(
       { id: id },
@@ -259,8 +258,8 @@ class UserService {
   }
 
   private async addToCallHistory(req: Request, res: Response) {
-    const id: String = JSON.parse(JSON.parse(req.body)).id;
-    const caller_id: String = JSON.parse(JSON.parse(req.body)).caller_id;
+    const id: String = req.body.id;
+    const caller_id: String = req.body.caller_id;
 
     const caller = await UserModel.findOne({ id: caller_id });
 
@@ -331,8 +330,8 @@ class UserService {
   }
 
   private async removeFromCallHistory(req: Request, res: Response) {
-    const userId: String = JSON.parse(JSON.parse(req.body)).id;
-    const callId: String = JSON.parse(JSON.parse(req.body)).callId;
+    const userId: String = req.body.id;
+    const callId: String = req.body.callId;
 
     const user = await UserModel.findOneAndUpdate(
       { id: userId },
@@ -355,7 +354,7 @@ class UserService {
   }
 
   private async clearCallHistory(req: Request, res: Response) {
-    const userId: String = JSON.parse(JSON.parse(req.body)).id;
+    const userId: String = req.body.id;
 
     const user = await UserModel.findOneAndUpdate(
       { id: userId },
@@ -378,8 +377,8 @@ class UserService {
   }
 
   private async removeContact(req: Request, res: Response) {
-    const userId: String = JSON.parse(JSON.parse(req.body)).id;
-    const contactId: String = JSON.parse(JSON.parse(req.body)).contactId;
+    const userId: String = req.body.id;
+    const contactId: String = req.body.contactId;
 
     const user = await UserModel.findOneAndUpdate(
       { id: userId },
@@ -402,8 +401,8 @@ class UserService {
   }
 
   private async updateContact(req: Request, res: Response) {
-    const userId: String = JSON.parse(JSON.parse(req.body)).id;
-    const updatedContact: String = JSON.parse(JSON.parse(req.body)).contact;
+    const userId: String = req.body.id;
+    const updatedContact: String = req.body.contact;
 
     const user = await UserModel.findOneAndUpdate(
       { id: userId },

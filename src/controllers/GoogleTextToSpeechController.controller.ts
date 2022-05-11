@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, Request, Response } from "express";
 
 class GoogleTextToSpeechController {
   public path = "/google";
@@ -9,7 +9,16 @@ class GoogleTextToSpeechController {
   }
 
   public initializeRoutes() {
-    this.router.post(this.path + "/text-to-speech");
+    this.router.post(
+      this.path + "/text-to-speech",
+      async (req: Request, res: Response) => {
+        return res.json({
+          resStatus: "SUCCESS",
+          message:
+            "Text To Speech moved to Android. This Endpoint is Deprecated!",
+        });
+      },
+    );
   }
 }
 
