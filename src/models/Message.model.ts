@@ -18,4 +18,4 @@ const Message = new Schema({
   sentAt: { type: Date, unique: false, required: true }, // Send Date
 });
 
-module.exports = mongoose.model("Message", Message);
+export default mongoose.model("Message", Message);

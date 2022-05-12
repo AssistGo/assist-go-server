@@ -58,12 +58,7 @@ class UserService {
 
   // Sync OR Create User
   private async syncUserData(req: Request, res: Response) {
-    console.log("User Sync");
-
-    console.log(req.body);
     const userDto = req.body.user;
-
-    console.log(userDto);
 
     const userDB = await UserModel.findOne({ id: userDto.id });
 
